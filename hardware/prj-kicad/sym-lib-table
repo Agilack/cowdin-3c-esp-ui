@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "cowdin-3c-esp-ui")(type "KiCad")(uri "${KIPRJMOD}/cowdin-3c-esp-ui.kicad_sym")(options "")(descr ""))
+)
