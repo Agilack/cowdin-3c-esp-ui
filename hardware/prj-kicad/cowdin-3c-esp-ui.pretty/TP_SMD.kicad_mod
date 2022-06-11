@@ -1,0 +1,14 @@
+(footprint "TP_SMD" (version 20211014) (generator pcbnew)
+  (layer "F.Cu")
+  (tedit 62A4AC42)
+  (attr through_hole)
+  (fp_text reference "TP_SMD" (at 0 -0.6) (layer "F.SilkS") hide
+    (effects (font (size 0.20066 0.20066) (thickness 0.04826)))
+    (tstamp e1cdeb56-1db0-456a-9bd8-60f63304f719)
+  )
+  (fp_text value "VAL**" (at 0 0.65) (layer "F.SilkS") hide
+    (effects (font (size 0.20066 0.20066) (thickness 0.04826)))
+    (tstamp d2e243ef-188e-40b6-8f69-38990dd6eee5)
+  )
+  (pad "1" smd circle (at 0 0) (size 1 1) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp cecb88cb-d591-4bbf-bd4c-bdf2e3cc2c30))
+)
