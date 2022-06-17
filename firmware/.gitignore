@@ -1,0 +1,12 @@
+
+# Intermediate compilation files
+*.o
+
+# Binary compilation outputs
+*.elf
+*.bin
+*.map
+*.dis
+
+# Editor files
+*~
