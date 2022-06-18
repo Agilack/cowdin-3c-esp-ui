@@ -17,6 +17,7 @@
 
 static inline void hw_init_button(void);
 static inline void hw_init_clock(void);
+static inline void hw_init_display(void);
 static inline void hw_init_leds(void);
 static inline void hw_init_uart(void);
 
@@ -35,6 +36,7 @@ void hw_init(void)
 	hw_init_clock();
 
 	hw_init_button();
+	hw_init_display();
 	hw_init_leds();
 	hw_init_uart();
 }
@@ -173,6 +175,46 @@ static inline void hw_init_clock(void)
 }
 
 /**
+ * @brief Initialize IOs used to control display
+ *
+ */
+static inline void hw_init_display(void)
+{
+	/* Configure DISP_RST (PA03) */
+	reg_wr(0x60000000 + 0x14, (1 << 03)); // OUT=0 (active reset !)
+	reg_wr(0x60000000 + 0x08, (1 << 03)); // DIR: output
+	reg8_wr(0x60000000 + 0x43, 0x00); // PINCFG: normal, no-pull, no pmux
+
+	/* Configure DISP_DC (PA02) */
+	reg_wr(0x60000000 + 0x14, (1 << 02)); // OUT=0
+	reg_wr(0x60000000 + 0x08, (1 << 02)); // DIR: output
+	reg8_wr(0x60000000 + 0x42, 0x00); // PINCFG: normal, no-pull, no pmux
+
+	/* Configure DISP_RW (PA01) */
+	reg_wr(0x60000000 + 0x14, (1 << 01)); // OUT=0
+	reg_wr(0x60000000 + 0x08, (1 << 01)); // DIR: output
+	reg8_wr(0x60000000 + 0x41, 0x00); // PINCFG: normal, no-pull, no pmux
+
+	/* Configure DISP_ERD (PA00) */
+	reg_wr(0x60000000 + 0x14, (1 << 00)); // OUT=0
+	reg_wr(0x60000000 + 0x08, (1 << 00)); // DIR: output
+	reg8_wr(0x60000000 + 0x40, 0x00); // PINCFG: normal, no-pull, no pmux
+
+	/* Configure DISP_NSS (PA06) */
+	reg_wr(0x60000000 + 0x18, (1 << 06)); // OUT=1
+	reg_wr(0x60000000 + 0x08, (1 << 06)); // DIR: output
+	reg8_wr(0x60000000 + 0x46, 0x00); // PINCFG: normal, no-pull, no pmux
+
+	/* Configure SPI lines (PA04, PA05, PA06, PA07) */
+	reg8_wr(0x60000000 + 0x44, 0x01); // PINCFG: Set PMUX for PA04 (MOSI)
+	reg8_wr(0x60000000 + 0x45, 0x01); // PINCFG: Set PMUX for PA05 (SCK)
+	reg8_wr(0x60000000 + 0x46, 0x00); // PINCFG: No-PMUX  for PA06 (NSS)
+	reg8_wr(0x60000000 + 0x47, 0x01); // PINCFG: Set PMUX for PA07 (MISO)
+	reg8_wr(0x60000000 + 0x32, (0x03 << 4) | (0x03 << 0)); // PMUX: D
+	reg8_wr(0x60000000 + 0x33, (0x03 << 4) | (0x03 << 0)); // PMUX: D
+}
+
+/**
  * @brief Initialize the LED io
  *
  */
@@ -180,10 +222,10 @@ static inline void hw_init_leds(void)
 {
 	/* Set LED "OFF" (pin output=1) */
 	reg_wr(0x60000000 + 0x18, (1 << 28));
-        /* DIR: Set PA28 as output */
-        reg_wr(0x60000000 + 0x08, (1 << 28));
-        /* PINCFG: Configure PA28 (strong strength, no pull, no pmux) */
-        reg8_wr(0x60000000 + 0x5C, 0x40);
+	/* DIR: Set PA28 as output */
+	reg_wr(0x60000000 + 0x08, (1 << 28));
+	/* PINCFG: Configure PA28 (strong strength, no pull, no pmux) */
+	reg8_wr(0x60000000 + 0x5C, 0x40);
 }
 
 /**
@@ -193,14 +235,13 @@ static inline void hw_init_leds(void)
 static inline void hw_init_uart(void)
 {
 	/* Configure main UART (SERCOM3) */
-	reg8_wr(0x60000000 + 0x56, 0x01); /* PINCFG: Set PMUX for PA22 (TX) */
-	reg8_wr(0x60000000 + 0x57, 0x01); /* PINCFG: Set PMUX for PA23 (RX) */
-	reg8_wr(0x60000000 + 0x3B, (0x02 << 4) | (0x02 << 0)); // PMUX: C */
+	reg8_wr(0x60000000 + 0x56, 0x01);    // PINCFG: Set PMUX for PA22 (TX)
+	reg8_wr(0x60000000 + 0x57, 0x01);    // PINCFG: Set PMUX for PA23 (RX)
+	reg8_wr(0x60000000 + 0x3B, (0x02 << 4) | (0x02 << 0)); // PMUX: C
 
-	/* Configure console/debug port (SERCOM0) */
-	reg8_wr(0x60000000 + 0x48, 0x01); /* PINCFG: Set PMUX for PA08 (TX) */
-	reg8_wr(0x60000000 + 0x49, 0x01); /* PINCFG: Set PMUX for PA09 (RX) */
-	reg8_wr(0x60000000 + 0x34, (0x02 << 4) | (0x02 << 0)); // PMUX: C */
+	/* Configure console/debug port (SERCOM2) */
+	reg8_wr(0x60000000 + 0x48, 0x01);    // PINCFG: Set PMUX for PA08 (TX)
+	reg8_wr(0x60000000 + 0x49, 0x01);    // PINCFG: Set PMUX for PA09 (RX)
+	reg8_wr(0x60000000 + 0x34, (0x03 << 4) | (0x03 << 0)); // PMUX: D
 }
-
 /* EOF */

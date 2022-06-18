@@ -18,7 +18,7 @@ BUILDDIR=build/
 TARGET=cowdin-ui
 
 ASRC = startup.s
-SRC  = main.c hardware.c uart.c
+SRC  = main.c hardware.c uart.c display.c
 
 CC  = $(CROSS)gcc
 OC  = $(CROSS)objcopy

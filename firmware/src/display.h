@@ -1,6 +1,6 @@
 /**
- * @file  uart.h
- * @brief Definitions and prototypes for UART functions
+ * @file  display.h
+ * @brief Definitions and prototypes for display driver
  *
  * @author Saint-Genest Gwenael <gwen@cowlab.fr>
  * @copyright Agilack (c) 2022
@@ -13,22 +13,19 @@
  * with this program, see LICENSE.md file for more details.
  * This program is distributed WITHOUT ANY WARRANTY.
  */
-#ifndef UART_H
-#define UART_H
-#include "hardware.h"
-#include "types.h"
+#ifndef DISPLAY_H
+#define DISPLAY_H
 
-#define UART_DBG SERCOM2_ADDR
-#define UART_SYS SERCOM3_ADDR
+#define DISP_MODE_CMD  0
+#define DISP_MODE_DATA 1
 
-void uart_crlf(void);
-void uart_dump(u8 *d, int l);
-void uart_init(void);
-void uart_putc(unsigned char c);
-void uart_puts(char *s);
-void uart_puthex  (const u32 c);
-void uart_puthex8 (const u8  c);
-void uart_puthex16(const u16 c);
+void disp_init(void);
+void disp_clear(unsigned char lines);
+void disp_pos(unsigned int x, unsigned int y);
+void disp_putc(char c);
+void disp_puts(char *s);
+
+void disp_test(int type);
 
 #endif
 /* EOF */

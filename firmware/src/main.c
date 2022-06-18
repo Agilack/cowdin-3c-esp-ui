@@ -13,6 +13,7 @@
  * with this program, see LICENSE.md file for more details.
  * This program is distributed WITHOUT ANY WARRANTY.
  */
+#include "display.h"
 #include "hardware.h"
 #include "uart.h"
 
@@ -31,8 +32,12 @@ int main(void)
 	hw_init();
 	/* Initialize peripherals */
 	uart_init();
+	disp_init();
 
 	uart_puts("\r\n--=={ CowDIN UI }==--  ");
+
+	disp_pos(0, 0); disp_puts("COWDIN-3C-UI");
+	disp_pos(0, 6); disp_puts("yellow :)");
 
 	// Dummy "blink led" loop
 	while(1)

@@ -50,10 +50,10 @@ void uart_init(void)
  */
 static void uart_init_dbg(void)
 {
-	/* Enable SERCOM0 clock (APBCMASK) */
-	reg_set(PM_ADDR + 0x20, (1 << 2));
-	/* Set GCLK for SERCOM0 (generic clock generator 1) */
-	reg16_wr (GCLK_ADDR + 0x02, (1 << 14) | (1 << 8) | 0x14);
+	/* Enable SERCOM2 clock (APBCMASK) */
+	reg_set(PM_ADDR + 0x20, (1 << 4));
+	/* Set GCLK for SERCOM2 (generic clock generator 1) */
+	reg16_wr (GCLK_ADDR + 0x02, (1 << 14) | (1 << 8) | 0x16);
 
 	/* Reset UART (set SWRST)     */
 	reg_wr((UART_DBG + 0x00), 0x01);
